@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}Webshell Index{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+            {% block content %}
+			<!-- 内容区域 -->
+
+			<div class="tpl-content-wrapper">
+
+				<div class="container-fluid am-cf">
+					<div class="row">
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+							<div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 流量 <small>检测系统</small></div>
+							<p class="page-header-description">目前只支持HTTP检测。</p>
+						</div>
+						<div class="am-u-lg-3 tpl-index-settings-button">
+							<button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 系统设置</button>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row-content am-cf">
+					<div class="row  am-cf">
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+							<div class="widget am-cf">
+								<div class="widget-head am-cf">
+									<div class="widget-title am-fl">本月累计检测数据</div>
+									<div class="widget-function am-fr">
+										<a href="javascript:;" class="am-icon-cog"></a>
+									</div>
+								</div>
+								<div class="widget-body am-fr">
+									<div class="am-fl">
+										<div class="widget-fluctuation-period-text">
+                                            {{ all_data }}
+											<button class="widget-fluctuation-tpl-btn">
+                        <i class="am-icon-calendar"></i>
+                        更多月份
+                      </button>
+										</div>
+									</div>
+									<div class="am-fr am-cf">
+										<div class="widget-fluctuation-description-amount am-text-danger" am-cf>
+											{{ bad_data }}
+
+										</div>
+										<div class="widget-fluctuation-description-text am-text-right">
+											检测有害信息
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
+							<div class="widget widget-primary am-cf">
+								<div class="widget-statistic-header">
+									 待检测数据
+								</div>
+								<div class="widget-statistic-body">
+									<div class="widget-statistic-value">
+										{{ wait_check_data }}
+									</div>
+									<div class="widget-statistic-description">
+										预计 {{ wait_time }} 内检测完成
+									</div>
+									<span class="widget-statistic-icon am-icon-credit-card-alt"></span>
+								</div>
+							</div>
+						</div>
+						<div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
+							<div class="widget widget-purple am-cf">
+								<div class="widget-statistic-header">
+									等待查看的结果
+								</div>
+								<div class="widget-statistic-body">
+									<div class="widget-statistic-value">
+                                        {{ target_num }}
+									</div>
+									<div class="widget-statistic-description">
+										最后一条时间 <strong>{{ target_last.created_at }}</strong>
+									</div>
+									<span class="widget-statistic-icon am-icon-support"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row am-cf">
+						<div class="am-u-sm-12 am-u-md-8">
+							<div class="widget am-cf">
+								<div class="widget-head am-cf">
+									<div class="widget-title am-fl">本月检测情况</div>
+									<div class="widget-function am-fr">
+										<a href="javascript:;" class="am-icon-cog"></a>
+									</div>
+								</div>
+								<div class="widget-body-md widget-body tpl-amendment-echarts am-fr" id="tpl-echarts">
+
+								</div>
+							</div>
+						</div>
+
+						<div class="am-u-sm-12 am-u-md-4">
+							<div class="widget am-cf">
+								<div class="widget-head am-cf">
+									<div class="widget-title am-fl">服务器运行负载</div>
+									<div class="widget-function am-fr">
+										<a href="javascript:;" class="am-icon-cog"></a>
+									</div>
+								</div>
+								<div class="widget-body widget-body-md am-fr">
+
+									<div class="am-progress-title">核心 负载 <span class="am-fr am-progress-title-more">28% / 100%</span></div>
+									<div class="am-progress">
+										<div class="am-progress-bar" style="width: 15%"></div>
+									</div>
+									<div class="am-progress-title">内存 负载 <span class="am-fr am-progress-title-more">78% / 100%</span></div>
+									<div class="am-progress">
+										<div class="am-progress-bar  am-progress-bar-warning" style="width: 75%"></div>
+									</div>
+									<div class="am-progress-title">处理 速度 <span class="am-fr am-progress-title-more">38% / 100%</span></div>
+									<div class="am-progress">
+										<div class="am-progress-bar am-progress-bar-danger" style="width: 38%"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row am-cf">
+
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg">
+
+							<div class="widget am-cf widget-body-lg">
+
+								<div class="widget-body  am-fr">
+									<div class="am-scrollable-horizontal ">
+										<table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
+											<thead>
+												<tr>
+													<th>检测时间</th>
+													<th>检测类型</th>
+													<th>检测ID</th>
+                                                    <th>检测URL</th>
+                                                    <th>检测COOKIE</th>
+													<th>检测结果</th>
+												</tr>
+											</thead>
+											<tbody>
+                                            {% for re in result_list %}
+                                                {% if re.origin_id in target_id %}
+                                                <tr class="gradeX" style="width:200px; height:50px;">
+													<td>{{ re.created_at }} </td>
+													<td>webshell</td>
+													<td>中国  {{ re.origin_id }} </td>
+                                                    <td>{{ re.origin_url | slice:"50" }}....</td>
+                                                    <td>{{ re.origin_cookie | slice:"50" }}...</td>
+													<td><span class="am-icon-close" style="color:crimson"></span></td>
+												</tr>
+                                            {% else %}
+												<tr class="gradeX" style="width:200px; height:50px;">
+													<td>{{ re.created_at }} </td>
+													<td>webshell</td>
+													<td>中国  {{ re.origin_id }} </td>
+                                                    <td>{{ re.origin_url | slice:"50" }}....</td>
+                                                    <td>{{ re.origin_cookie | slice:"50" }}...</td>
+													<td><span class="am-icon-check" style="color:greenyellow"></span></td>
+												</tr>
+                                            {% endif %}
+                                            {% endfor %}
+												<!-- more data -->
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+        {% endblock %}
+     {% block js %}{% endblock %}

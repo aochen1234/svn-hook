@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Webshell Index{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+            {% block content %}
+			<!-- 内容区域 -->
+
+			<div class="tpl-content-wrapper">
+
+				<div class="container-fluid am-cf">
+					<div class="row">
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+							<div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检验结果展示 <small>（只展示最近10条结果）</small></div>
+							<p class="page-header-description">目前只支持HTTP检测。</p>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row-content am-cf">
+		                	<div class="row  am-cf">
+					<div class="row am-cf">
+
+					<div class="row am-cf">
+
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg">
+
+							<div class="widget am-cf widget-body-lg">
+
+								<div class="widget-body  am-fr">
+									<div class="am-scrollable-horizontal ">
+										<table width="200%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
+											<thead>
+												<tr>
+													<th>检测时间</th>
+													<th>检测类型</th>
+													<th>检测ID</th>
+                                                    <th>检测URL</th>
+                                                    <th>检测COOKIE</th>
+													<th>检测结果</th>
+												</tr>
+											</thead>
+											<tbody>
+                                            {% for re in result_list %}
+                                                {% if re.origin_id in target_id %}
+                                                <tr class="gradeX" style="width:200px; height:100px;">
+													<td>{{ re.created_at }} </td>
+													<td>webshell</td>
+													<td>中国  {{ re.origin_id }} </td>
+                                                    <td>{{ re.origin_url | slice:"50" }}....</td>
+                                                    <td>{{ re.origin_cookie | slice:"50" }}...</td>
+													<td><span class="am-icon-close" style="color:crimson"></span></td>
+												</tr>
+                                            {% else %}
+												<tr class="gradeX" style="width:200px; height:60px;">
+													<td>{{ re.created_at }} </td>
+													<td>webshell</td>
+													<td>中国  {{ re.origin_id }} </td>
+                                                    <td>{{ re.origin_url | slice:"50" }}....</td>
+                                                    <td>{{ re.origin_cookie | slice:"50" }}...</td>
+													<td><span class="am-icon-check" style="color:greenyellow"></span></td>
+												</tr>
+                                            {% endif %}
+                                            {% endfor %}
+												<!-- more data -->
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+        {% endblock %}
+     {% block js %}{% endblock %}
