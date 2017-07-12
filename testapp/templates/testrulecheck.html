@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Testrule Check{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+            {% block content %}
+			<!-- 内容区域 -->
+
+			<div class="tpl-content-wrapper">
+
+				<div class="container-fluid am-cf">
+					<div class="row">
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+							<div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检验规则展示 <small></small></div>
+							<p class="page-header-description">目前只支持HTTP检测。</p>
+						</div>
+                        <div class="am-u-lg-3 tpl-index-settings-button">
+                            <a href="{% url "testruleup" %}"><button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 添加新的检验规则</button></a>
+                    </div>
+					</div>
+
+				</div>
+
+				<div class="row-content am-cf">
+		                	<div class="row  am-cf">
+					<div class="row am-cf">
+
+					<div class="row am-cf">
+
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg">
+
+							<div class="widget am-cf widget-body-lg">
+
+								<div class="widget-body  am-fr">
+									<div class="am-scrollable-horizontal ">
+										<table width="200%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
+											<thead>
+												<tr>
+													<th style="font-size: 20px">检验名字</th>
+                                                    <th style="font-size: 20px">路由</th>
+                                                    <th style="font-size: 20px">COOKIE</th>
+                                                    <th style="font-size: 20px">操作</th>
+												</tr>
+											</thead>
+											<tbody>
+                                            {% for re in article_list %}
+                                                <tr class="gradeX" style="width:200px; height:50px;">
+													<td>{{ re.name }} </td>
+													<td>{{ re.url }} </td>
+                                                    <td>{{ re.cookie  }}</td>
+                                                       <td> <div class="tpl-table-black-operation" >
+                                                        <a href="{% url "testruledel" re.id %}" style="font-size: 20px">
+                                                            <i class="am-icon-pencil"></i> 删除
+                                                        </a>
+                                                    </div></td>
+												</tr>
+                                            {% endfor %}
+                                            </tbody>
+										</table>
+                                            <nav aria-label="Page navigation">
+                                                 <ul class="pagination">
+                                                        {% if cus_list.has_previous %}
+                                                            <li>
+                                                            <a href="?page={{ cus_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                                                            </li>
+                                                        {% endif %}
+
+                                                       {% for pg in cus_list.paginator.page_range %}
+                                                        {% if cus_list.number == pg %}
+                                                        <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+                                                        {% else %}
+                                                        <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                        {% if cus_list.has_next %}
+                                                            <li>
+                                                                <a href="?page={{ cus_list.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                                                        {% endif %}
+                                                    </ul>
+                                            </nav>
+                                    </div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+        {% endblock %}
+     {% block js %}{% endblock %}

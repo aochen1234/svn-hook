@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Speed Set{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+            {% block content %}
+
+<body data-type="login">
+        <!-- 风格切换 -->
+
+        <div class="tpl-login">
+            <div class="tpl-login-content">
+                         <a href="{% url "index" %}"><button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " style="margin-left: 500px">撤销</button></a>
+
+                <div class="tpl-login-title">每批检验数量设置</div>
+
+
+                <form class="am-form tpl-form-line-form">
+                    <div class="am-form-group">
+                        <label for="user-weibo" class="am-u-sm-3 am-form-label">当前检验数量 <span class="tpl-form-line-small-title"></span></label>
+                        <div class="am-u-sm-9">
+                            <label for="user-weibo" class="am-u-sm-3 am-form-label">{{ db.speed }}</label>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-weibo" class="am-u-sm-3 am-form-label">设置 <span class="tpl-form-line-small-title"></span></label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-speed" placeholder="请设置" name="speed">
+                            <span id="speed-set" style="color: yellowgreen; "></span>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+
+                        <button type="button" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn" onclick="speedset();">提交</button>
+
+                    </div>
+                </form>
+                {% endblock %}
+{% block js %}
+    function speedset() {
+            var user = $('#user-speed').val();
+            $.ajax({
+                url: '/webshell/speed/speedset',
+                type: 'POST',
+                data: {speed:user},
+                success:function (callback) {
+                    var callback_dict = $.parseJSON(callback);
+                    if(callback_dict.status == 1002){
+                        $('#speed-set').text('设置成功，3s后返回');
+                        $('#speed-set').removeClass('error').addClass('success');
+                        setInterval ("settime()", 1500);
+                    } else if(callback_dict.status == 1001){
+                        $('#speed-set').text(callback_dict.error);
+                        $('#speed-set').removeClass('success').addClass('error');
+                    }
+                }
+            })
+        };
+    function settime(){
+        window.location.href = "{% url "index" %}";
+    };
+{% endblock %}

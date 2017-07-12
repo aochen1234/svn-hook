@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Test Source{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+            {% block content %}
+			<!-- 内容区域 -->
+
+			<div class="tpl-content-wrapper">
+
+				<div class="container-fluid am-cf">
+					<div class="row">
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+							<div class="page-header-heading"><span class="am-icon-home page-header-heading-icon">检验来源</span><small></small></div>
+							<p class="page-header-description">目前只支持HTTP检测。</p>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row-content am-cf">
+		                	<div class="row  am-cf">
+					<div class="row am-cf">
+
+					<div class="row am-cf">
+
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg">
+
+							<div class="widget am-cf widget-body-lg">
+
+								<div class="widget-body  am-fr">
+									<div class="am-scrollable-horizontal ">
+										<table width="200%" class="am-table am-table-compact am-text-nowrap tpl-table-black ">
+											<thead>
+												<tr>
+													<th style="font-size: 20px">IP地址</th>
+													<th style="font-size: 20px">端口</th>
+													<th style="font-size: 20px">数据库</th>
+                                                    <th style="font-size: 20px">用户名</th>
+                                                    <th style="font-size: 20px">用户密码</th>
+                                                    <th style="font-size: 20px">检验表单</th>
+                                                    <th style="font-size: 20px">操作</th>
+												</tr>
+											</thead>
+											<tbody>
+                                                <tr class="gradeX" style="width:200px; height:50px;">
+													<td style="font-size: 30px">{{ dbinfo.host }}</td>
+													<td style="font-size: 30px">{{ dbinfo.port }}</td>
+													<td style="font-size: 30px">{{ dbinfo.type }} </td>
+                                                    <td style="font-size: 30px">{{ dbinfo.username }}</td>
+                                                    <td style="font-size: 30px">******</td>
+                                                    <td style="font-size: 30px">{{ dbinfo.table }}</td>
+                                                    <td style="font-size: 30px">
+                                                    <div class="tpl-table-black-operation">
+                                                        <a href="{% url "source_set" %}" style="font-size: 20px">
+                                                            <i class="am-icon-pencil"></i> 编辑
+                                                        </a>
+                                                    </div></td>
+												</tr>
+												<!-- more data -->
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+        {% endblock %}
+     {% block js %}{% endblock %}

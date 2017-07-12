@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Test Source Setting{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+            {% block content %}
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检测来源设置</div>
+                        <p class="page-header-description">仅支持Oracle数据库</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">配置数据</div>
+                                  <a href="{% url "test_source" %}"><button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " style="margin-left: 1000px">撤销</button></a>
+
+                            </div>
+                            <div class="widget-body am-fr">
+
+                                <form class="am-form tpl-form-line-form">
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 20px">IP地址</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="user-ip" name="ip">
+                                            <small>请填写合法的IP地址。</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 20px">端口</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" id="user-port" name="port">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 20px">数据库</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="type" id="user-type">
+                                            <small>请填写Oracle的数据库。</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 20px">用户名</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="username" id="user-username">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label" style="font-size: 20px">用户密码</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="password" name="password" id="user-password">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="am-form-group">
+                                        <label for="user-weibo" class="am-u-sm-3 am-form-label" style="font-size: 20px">检验表单</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" id="user-table" name="table">
+                                            <div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label for="user-intro" class="am-u-sm-3 am-form-label" style="font-size: 20px;">提交后程序从头检验</label>
+                                        <small>数据库及检验表单修改后此项必须选择</small>
+                                        <div class="am-u-sm-9">
+                                            <div class="tpl-switch">
+                                                <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" id="cb" >
+                                                <div class="tpl-switch-btn-view">
+                                                    <div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="testsetpost();">提交</button><span style="color: yellowgreen;font-size: larger" id="test-set"><span><span style="color: yellowgreen;font-size: larger" id="test-se"><span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <p id="hh"></p>
+                    </div>
+                </div>
+        </div>
+{% endblock %}
+{% block js %}
+    $(document).ready(function () {
+    getsetinfo()
+            });
+    function getsetinfo() {
+        $.ajax({
+            url: '{% url "info_get" %}',
+            type: 'GET',
+            success:function (callback) {
+                    var callback_dict = $.parseJSON(callback);
+                    $('#user-ip').val(callback_dict.ip);
+                    $('#user-port').val(callback_dict.port);
+                    $('#user-type').val(callback_dict.type);
+                    $('#user-username').val(callback_dict.username);
+                    $('#user-password').val(callback_dict.password);
+                    $('#user-table').val(callback_dict.table);
+                    }
+                })
+    };
+    function testsetpost() {
+            var isChecked = $('#cb').prop('checked');
+            var ip = $('#user-ip').val();
+            var port = $('#user-port').val();
+            var username = $('#user-username').val();
+            var password = $('#user-password').val();
+            var type = $('#user-type').val();
+            var table = $('#user-table').val();
+            $.ajax({
+                url: '{% url "info_set" %}',
+                type: 'POST',
+                data: {ips:ip, ports:port, usernames:username, passwords:password, types:type, tables:table, ischecked: isChecked},
+                success:function (callback) {
+                    var callback_dict = $.parseJSON(callback);
+                    if(callback_dict.status == 1002){
+                        $('#test-set').text('设置成功，3s后自动返回');
+                        $('#test-set').removeClass('error').addClass('success');
+                        setInterval ("settime()", 1500);
+                    } else if(callback_dict.status == 1001){
+                        $('#test-se').text(callback_dict.error);
+                        $('#test-se').hide(3000);
+                        $('#test-se').removeClass('success').addClass('error');
+                    }
+                }
+            })
+        };
+    function settime(){
+        window.location.href = "{% url "test_source" %}";
+    }
+{% endblock %}

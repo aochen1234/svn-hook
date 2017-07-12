@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Webshell Test Display{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+            {% block content %}
+			<!-- 内容区域 -->
+
+			<div class="tpl-content-wrapper">
+
+				<div class="container-fluid am-cf">
+					<div class="row">
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+							<div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检验结果展示 <small></small></div>
+							<p class="page-header-description">目前只支持HTTP检测。</p>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row-content am-cf">
+                <div class="row  am-cf">
+							<div class="widget am-cf widget-body-lg">
+
+								<div class="widget-body  am-fr">
+									<div class="am-scrollable-horizontal ">
+										<table width="200%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
+											<thead>
+												<tr>
+													<th style="font-size: 20px">检测时间</th>
+													<th style="font-size: 20px">原始ID</th>
+                                                    <th style="font-size: 20px">原始URL</th>
+                                                    <th style="font-size: 20px">原始COOKIE</th>
+													<th style="font-size: 20px">检测结果</th>
+												</tr>
+											</thead>
+											<tbody>
+                                            {% for re in article_list %}
+                                                {% if re.is_target %}
+                                                <tr class="gradeX" style="width:200px; height:50px;">
+													<td>{{ re.created_at }} </td>
+													<td>中国  {{ re.origin_id }} </td>
+                                                    <td>{{ re.origin_url | slice:"50" }}....</td>
+                                                    <td>{{ re.origin_cookie | slice:"50" }}...</td>
+													<td><span class="am-icon-close" style="color:crimson"></span></td>
+												</tr>
+                                            {% else %}
+												<tr class="gradeX" style="width:200px; height:60px;">
+													<td>{{ re.created_at }} </td>
+													<td>中国  {{ re.origin_id }} </td>
+                                                    <td>{{ re.origin_url | slice:"50" }}....</td>
+                                                    <td>{{ re.origin_cookie | slice:"50" }}...</td>
+													<td><span class="am-icon-check" style="color:greenyellow"></span></td>
+												</tr>
+                                            {% endif %}
+                                            {% endfor %}
+												<!-- more data -->
+											</tbody>
+										</table>
+                                    <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                {% if cus_list.has_previous %}
+                                                    <li>
+                                                    <a href="?page={{ cus_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                                                    </li>
+                                                {% endif %}
+
+                                               {% for pg in cus_list.paginator.page_range %}
+                                                {% if cus_list.number == pg %}
+                                                <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+                                                {% else %}
+                                                <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+                                                {% endif %}
+                                                {% endfor %}
+                                                {% if cus_list.has_next %}
+                                                    <li>
+                                                        <a href="?page={{ cus_list.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                                                {% endif %}
+                                            <form class="am-form tpl-form-line-form" method="post" action="{% url "page_set" %}">
+                                                {% csrf_token %}
+                    <div class="am-form-group">
+                        <label for="user-weibo" class="am-u-sm-3 am-form-label">页数 <span class="tpl-form-line-small-title"></span></label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="page-s" placeholder="请输入" name="pages">
+                            <small>请填写合适的页数</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <button type="submit" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">提交</button>
+                    </div>
+                </form>
+                                            </ul>
+                                            </nav>
+                                    </div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+        {% endblock %}
+{% block js %}
+{% endblock %}
+
