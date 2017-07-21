@@ -219,7 +219,7 @@
 					<li class="sidebar-nav-link">
 						<a href="javascript:;" class="sidebar-nav-sub-title">
 							<i class="am-icon-table sidebar-nav-link-logo"></i> 用户设置
-                            <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+							<span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
 						</a>
 						<ul class="sidebar-nav sidebar-nav-sub">
 							<li class="sidebar-nav-link">
@@ -431,5 +431,12 @@
 		<script src="assets/js/app.js"></script>
 
 	</body>
-
+       $(document).ready(function () {
+            if(window.name!="hasLoad"){
+            location.reload();
+                window.name = "hasLoad";
+            }else{
+            window.name="";
+}
+        })
 </html>

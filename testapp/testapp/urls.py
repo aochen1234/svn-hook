@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.log_handle, name='log_handle'),
     url(r'accountcheck/$', views.user_ajax, name='user_ajax'),
+    url(r'test/$', views.testa, name='testa'),
     url(r'^webshell/', include(web_url)),
 ]
 

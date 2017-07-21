@@ -2,6 +2,40 @@
 {% block title %}Webshell Index{% endblock %}
 {% block welcome %}{{ user }}{% endblock %}
 {% block name %}{{ user }}{% endblock %}
+{% block menu %}
+    <ul class="sidebar-nav">
+					<li class="sidebar-nav-link">
+						<a href="{% url "index" %}">
+							<i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url 'result_dis' %}">
+							<i class="am-icon-clone sidebar-nav-link-logo"></i> 检测结果查看
+							<span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm"></span>
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "test_source" %}">
+							<i class="am-icon-table sidebar-nav-link-logo" style="color: #0c80ba"></i> 检测来源设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "testrule" %}">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测规则设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "speed" %}" >
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测批数设置
+						</a>
+					</li>
+                    <li class="sidebar-nav-heading"></li>
+                    <li class="sidebar-nav-link">
+                    </li>
+			</div>
+        </ul>
+{% endblock %}
  {% block content %}
      <div class="tpl-content-wrapper">
 
@@ -24,9 +58,7 @@
                         <div class="widget am-cf">
                             <div class="widget-head am-cf">
                                 <div class="widget-title am-fl"> 设置表单</div>
-                                <div class="widget-function am-fr">
-                                    <a href="javascript:;" class="am-icon-cog"></a>
-                                </div>
+
                             </div>
                             <div class="widget-body am-fr">
                                 <form class="am-form tpl-form-line-form" method="post" action="{% url 'accountset' %}">

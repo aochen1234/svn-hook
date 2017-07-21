@@ -2,6 +2,40 @@
 {% block title %}Test Source Setting{% endblock %}
 {% block welcome %}{{ user }}{% endblock %}
 {% block name %}{{ user }}{% endblock %}
+{% block menu %}
+				<ul class="sidebar-nav">
+					<li class="sidebar-nav-link">
+						<a href="{% url "index" %}">
+							<i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url 'result_dis' %}">
+							<i class="am-icon-clone sidebar-nav-link-logo"></i> 检测结果查看
+							<span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm"></span>
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "test_source" %}" class="active">
+							<i class="am-icon-table sidebar-nav-link-logo" style="color: #0c80ba"></i> 检测来源设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "testrule" %}">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测规则设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "speed" %}" >
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测批数设置
+						</a>
+					</li>
+                    <li class="sidebar-nav-heading"></li>
+                    <li class="sidebar-nav-link">
+                    </li>
+			</div>
+        </ul>
+    {% endblock %}
             {% block content %}
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
@@ -21,7 +55,6 @@
                         <div class="widget am-cf">
                             <div class="widget-head am-cf">
                                 <div class="widget-title am-fl">配置数据</div>
-                                  <a href="{% url "test_source" %}"><button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " style="margin-left: 1000px">撤销</button></a>
 
                             </div>
                             <div class="widget-body am-fr">
@@ -30,7 +63,7 @@
                                     <div class="am-form-group">
                                         <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 20px">IP地址</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" class="tpl-form-input" id="user-ip" name="ip">
+                                            <input type="text" class="tpl-form-input" id="user-ip" name="ip" style="color:yellowgreen;font-size: 20px">
                                             <small>请填写合法的IP地址。</small>
                                         </div>
                                     </div>
@@ -38,20 +71,20 @@
                                     <div class="am-form-group">
                                         <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 20px">端口</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" id="user-port" name="port">
+                                            <input type="text" id="user-port" name="port" style="color:yellowgreen;font-size: 20px">
                                         </div>
                                     </div>
                                     <div class="am-form-group">
                                         <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 20px">数据库</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" name="type" id="user-type">
+                                            <input type="text" name="type" id="user-type" style="color:yellowgreen;font-size: 20px">
                                             <small>请填写Oracle的数据库。</small>
                                         </div>
                                     </div>
                                     <div class="am-form-group">
                                         <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 20px">用户名</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" name="username" id="user-username">
+                                            <input type="text" name="username" id="user-username" style="color:yellowgreen;font-size: 20px">
                                         </div>
                                     </div>
 
@@ -63,7 +96,7 @@
                                     <div class="am-form-group">
                                         <label class="am-u-sm-3 am-form-label" style="font-size: 20px">用户密码</label>
                                         <div class="am-u-sm-9">
-                                            <input type="password" name="password" id="user-password">
+                                            <input type="password" name="password" id="user-password" style="color:yellowgreen;font-size: 20px">
                                         </div>
                                     </div>
 
@@ -71,7 +104,7 @@
                                     <div class="am-form-group">
                                         <label for="user-weibo" class="am-u-sm-3 am-form-label" style="font-size: 20px">检验表单</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" id="user-table" name="table">
+                                            <input type="text" id="user-table" name="table" style="color:yellowgreen;font-size: 20px">
                                             <div>
 
                                             </div>
@@ -83,7 +116,7 @@
                                         <small>数据库及检验表单修改后此项必须选择</small>
                                         <div class="am-u-sm-9">
                                             <div class="tpl-switch">
-                                                <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" id="cb" >
+                                                <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" id="cb" style="color:yellowgreen;font-size: 20px">
                                                 <div class="tpl-switch-btn-view">
                                                     <div>
                                                     </div>
@@ -96,6 +129,7 @@
                                             <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="testsetpost();">提交</button><span style="color: yellowgreen;font-size: larger" id="test-set"><span><span style="color: yellowgreen;font-size: larger" id="test-se"><span>
                                         </div>
                                     </div>
+                                    <a href="{% url "test_source" %}"><button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " style="margin-left: 412px">返回</button></a>
                                 </form>
                             </div>
                         </div>

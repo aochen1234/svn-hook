@@ -55,35 +55,30 @@ def savelastId(Id):
     db.save()
 
 
-def targetcheck(li):
-    if len(li) == 0:
-        pass
-    else:
-        for i in range(len(li)):
-            try:
-                target = TestResult.objects.get(origin_id=li[i]['id'])
-                na = TestRule.objects.get(name=li[i]['name'])
-                target.is_target = True
-                target.testrule_id = na.id
-                target.save()
-            except:
-                url_list = []
-                cookie_list = []
-                target = TestResult.objects.filter(origin_id=li[i]['id']).order_by('-created_at')
-                for i in target[1:]:
-                    url_list.append(i.origin_url)
-                    cookie_list.append(i.origin_cookie)
-                if target[0].origin_url in url_list and target[0].origin_cookie in cookie_list:
-                    target[0].delete()
-                else:
-                    na = TestRule.objects.get(name=li[i]['name'])
-                    target[0].is_target = True
-                    target[0].testrule_id = na.id
-                    target[0].save()
+def targetresult(id, names):
+    try:
+        target = TestResult.objects.get(origin_id=id)
+        na = TestRule.objects.get(name=names)
+        target.is_target = True
+        target.testrule_id = na.id
+        target.save()
+    except:
+        url_list = []
+        cookie_list = []
+        target = TestResult.objects.filter(origin_id=id).order_by('-created_at')
+        for i in target[1:]:
+            url_list.append(i.origin_url)
+            cookie_list.append(i.origin_cookie)
+        if target[0].origin_url in url_list and target[0].origin_cookie in cookie_list:
+            target[0].delete()
+        else:
+            na = TestRule.objects.get(name=names)
+            target[0].is_target = True
+            target[0].testrule_id = na.id
+            target[0].save()
 
 
 def poccheck(poclist, checkitem, ID):
-    ret = {'statue':'', 'id':'', 'name': ''}
     for name, pocinfo in poclist.items():
         for pocitem, poccheckinfo in pocinfo.items():
             if pocitem in checkitem:
@@ -92,11 +87,9 @@ def poccheck(poclist, checkitem, ID):
                 if ismatch:
                     nowtime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
                     writepoc(ID + ":match->" + name + "." + pocitem + ":" + checkitem[pocitem])
-                    ret['statue'] = True
-                    ret['id'] = ID
-                    ret['name'] = name
-                    return ret
-    return 10
+                    targetresult(ID, name)
+                    return True
+    return False
 
 def main_handle():
     try:
@@ -178,65 +171,35 @@ def main_handle():
             ik = ik + 1
 
         webshell_result = 0
-        result_list = []
-        b = 0
-        c = 0
-        nu = 0
-        result = []
         while rresss:
-            result_list.append(rresss)
-            nu += 1
-            if nu < 3000:
-                pass
-            else:
-                pro_insert = list()
-                for i in result_list:
-                    if i[14] != None or i[18] != None:
-                        pro_insert.append(TestResult(origin_id=i[0], origin_url=i[14], origin_cookie=i[18]))
-                TestResult.objects.bulk_create(pro_insert)
-                result_list = []
-                b += 1
-                nu = 0
-            if rresss[checkik['id']] == (totalcount - 1):
-                pro_insert = list()
-                for i in result_list:
-                    if i[14] != None or i[18] != None:
-                        pro_insert.append(TestResult(origin_id=i[0], origin_url=i[14], origin_cookie=i[18]))
-                TestResult.objects.bulk_create(pro_insert)
-                result_list = []
-                b = 0
-            else:
-                pass
+            if rresss[14] != None or rresss[18] != None:
+                TestResult.objects.create(origin_id=rresss[0], origin_url=rresss[14], origin_cookie=rresss[18])
             bar.move()
             bar.log('* checking [' + str(rresss[checkik['id']]) + "->" + str(rresss[checkik['url']]) + ']')
             number = (int(totalcount) - int(rresss[checkik['id']]))
-            numbers = ResultNumber.objects.all().order_by('-created_at')
+            numbers = ResultNumber.objects.order_by('-created_at')
             numbers_id = numbers[0].id
             numbers_res = ResultNumber.objects.get(id=numbers_id)
             numbers_res.wait_check_data = number
             numbers_res.save()
             checkitem = {}
 
-
             for k, v in checkik.items():
                 checkitem[k] = str(rresss[v])
+
             ismatch = poccheck(poclist, checkitem, str(rresss[checkik['id']]))
-            if ismatch != 10:
+            if (ismatch):
                 bar.log("+ -> find webshell ->[" + str(rresss[checkik['id']]) + ":" + str(rresss[checkik['url']]) + ']')
                 webshell_result = webshell_result + 1
-                result.append(ismatch)
+
             if rresss[checkik['id']] % 1000 == 0:
                 savelastId(rresss[checkik['id']])
-            if rresss[checkik['id']] % 4000 == 0 or rresss[checkik['id']] == (totalcount - 1):
-                targetcheck(result)
-                result = []
             krresss = x.fetchone()
             if krresss:
                 rresss = krresss
             else:
                 savelastId(rresss[checkik['id']])
                 rresss = krresss
-
 
                 # break
 

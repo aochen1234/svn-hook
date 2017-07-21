@@ -1,10 +1,9 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse, get_object_or_404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import NewUser, TestResult, TestRule, TestSet
-from .view_support import alldataorderbymonth, waitcheckdata, waitcheckdatatime, resultdisplay, baddata
+from .models import NewUser, TestSet
+from .view_support import *
 from .test_handle import main_handle
 from .forms import ChangePasswordForm
 import json
@@ -53,7 +52,6 @@ def log_out(request):
 #  首页
 @login_required
 def index(request):
-    user = request.user
     all_data = alldataorderbymonth()
     wait_check_data = waitcheckdata()
     wait_time = waitcheckdatatime()
@@ -62,7 +60,10 @@ def index(request):
     wait_check_num = TestResult.objects.filter(is_target=True, is_check=False).order_by('-created_at').count()
     bad_data = len(result_num)
     if bad_data <= 0:
-        bad_data_time = TestResult.objects.filter(is_target=True, is_check=True).order_by('-created_at')[0].created_at
+        try:
+            bad_data_time = TestResult.objects.filter(is_target=True, is_check=True).order_by('-created_at')[0].created_at
+        except:
+            bad_data_time = 0
     else:
         bad_data_time = result_num[0].created_at
     return render(request, 'index.html', locals())
@@ -71,60 +72,51 @@ def index(request):
 #  检验结果查看
 @login_required
 def result_dis(request):
+    cata = request.GET.get('catagory')
     user = request.user
-    cus_list = TestResult.objects.all().order_by('-created_at')[:50]
-    paginator = Paginator(cus_list, 10)
-
-    page = request.GET.get('page')
-    if page:
-        article_list = paginator.page(page).object_list
+    if cata == 'result':
+        USER_LIST = TestResult.objects.all().order_by('-created_at')
+        result_num = USER_LIST.count()
+        paginator = pagedivide(request, USER_LIST)
+        return render(request, 'result_dis.html', {'user': user, 'users':paginator, 'result': result_num, "cata": cata})
+    elif cata == 'allbaddata':
+        USER_LIST = TestResult.objects.filter(is_target=True).order_by('-created_at')
+        result_num = USER_LIST.count()
+        paginator = pagedivide(request, USER_LIST)
+        return render(request, 'result_dis.html', {'user': user, 'users':paginator, 'result': result_num, "cata": cata})
+    elif cata == 'baddata':
+        USER_LIST = TestResult.objects.filter(is_target=True, is_check=False).order_by('-created_at')
+        result_num = USER_LIST.count()
+        paginator = pagedivide(request, USER_LIST)
+        return render(request, 'result_dis.html', {'user': user, 'users':paginator, 'result': result_num, "cata": cata})
     else:
-        article_list = paginator.page(1).object_list
-    try:
-        customer = paginator.page(page)
-    except PageNotAnInteger:
-        customer = paginator.page(1)
-    except EmptyPage:
-        customer = paginator.page(paginator.num_pages)
-
-    return render(request, 'result_dis.html', {'user': user, 'article_list': article_list, 'cus_list': customer})
-
-
-#  自定义页数查询
-@login_required
-def page_set(request):
-    user = request.user
-    if request.method == 'POST':
-        pages = request.POST['pages']
-        page_list = TestResult.objects.all().count() // 10
-        if int(pages):
-            if int(pages) <=0 or int(pages) >= page_list:
-                return render(request, '404.html', locals())
-            else:
-                if int(pages) == 1:
-                    result_list = TestResult.objects.all().order_by('-created_at')[:10]
-                else:
-                    result_list = TestResult.objects.all().order_by('-created_at')[(int(pages) * 10):((int(pages) + 1) * 10)]
-                return render(request, 'result_page.html', locals())
-        else:
-            return render(request, '404.html', locals())
-
+        USER_LIST = TestResult.objects.all().order_by('-created_at')
+        result_num = USER_LIST.count()
+        paginator = pagedivide(request, USER_LIST)
+        return render(request, 'result_dis.html', {'user': user, 'users': paginator, 'result': result_num, "cata": 'result'})
 
 #  累计有害信息查看
 @login_required
 def baddatacheck(request):
     user = request.user
     result_l = TestResult.objects.filter(is_target=True).order_by('-created_at')
-    result_list = list(set(result_l))
-    return render(request, 'baddata.html', locals())
+    result_num = TestResult.objects.filter(is_target=True).count()
+    paginator = pagedivide(request, result_l)
+    return render(request, 'result_dis.html', {'user': user, 'users':paginator, 'result': result_num})
 
 
 #  待查看结果
 @login_required
 def waitdata(request):
     user = request.user
-    result_list = TestResult.objects.filter(is_target=True, is_check=False).order_by('-created_at')
-    return render(request, 'waitdata.html', locals())
+    try:
+        result_list = TestResult.objects.filter(is_target=True, is_check=False).order_by('-created_at')
+        result_num = result_list.count()
+    except:
+        result_list = None
+        result_num = 0
+    paginator = pagedivide(request, result_list)
+    return render(request, 'result_dis.html', {'user': user, 'users': paginator, 'result': result_num})
 
 
 #  待查看结果的详细信息
@@ -142,21 +134,10 @@ def alldata(request, re_id):
 def testrulecheck(request):
     user = request.user
     cus_list = TestRule.objects.all().order_by('-created_at')
-    paginator = Paginator(cus_list, 10)
+    result = cus_list.count()
+    paginator = pagedivide(request, cus_list)
 
-    page = request.GET.get('page')
-    if page:
-        article_list = paginator.page(page).object_list
-    else:
-        article_list = paginator.page(1).object_list
-    try:
-        customer = paginator.page(page)
-    except PageNotAnInteger:
-        customer = paginator.page(1)
-    except EmptyPage:
-        customer = paginator.page(paginator.num_pages)
-
-    return render(request, 'testrulecheck.html', {'user': user, 'article_list': article_list, 'cus_list': customer})
+    return render(request, 'testrulecheck.html', {'user': user, 'users': paginator, 'result': result})
 
 
 #  检验规则删除
@@ -234,7 +215,10 @@ def ruledel(request, rule_id, c_id):
 @login_required
 def test_source(request):
     user = request.user
-    dbinfo = TestSet.objects.all()[0]
+    try:
+        dbinfo = TestSet.objects.all()[0]
+    except:
+        dbinfo = []
     return render(request, 'testsource.html', locals())
 
 
@@ -242,7 +226,10 @@ def test_source(request):
 @login_required
 def sourceset(request):
     user = request.user
-    dbinfo = TestSet.objects.all()[0]
+    try:
+        dbinfo = TestSet.objects.all()[0]
+    except:
+        dbinfo = []
     return render(request, 'sourceform.html', locals())
 
 
@@ -251,8 +238,12 @@ def sourceset(request):
 @login_required()
 def speedset(request):
     user = request.user
-    db = TestSet.objects.all()[0]
-    return render(request, 'speedset.html', locals())
+    try:
+        db = TestSet.objects.all()[0]
+        speed = db.speed
+    except:
+        speed = 0
+    return render(request, 'speedsets.html', locals())
 
 
 #  检验速度设置提交表单处理
@@ -300,20 +291,27 @@ def infoset(request):
             resss = x.fetchone()
             totalcount = resss[0]
             if totalcount == 1:
-                result = TestSet.objects.all().order_by('-created_at')[0]
-                result.host = ip
-                result.port = port
-                result.username = username
-                result.password = password
-                result.type = type
-                result.table = table
-                if ischeck == 'true':
-                    result.lastid = 0
-                    result.save()
+                re = TestSet.objects.all().count()
+                if re == 0:
+                    print(1)
+                    TestSet.objects.create(host=ip, port=port, username=username, password=password, type=type, table=table, lastid=0, speed=0)
+                    print(2)
                     ret['status'] = 1002
                 else:
-                    ret['status'] = 1002
-                    result.save()
+                    result = TestSet.objects.all().order_by('-created_at')[0]
+                    result.host = ip
+                    result.port = port
+                    result.username = username
+                    result.password = password
+                    result.type = type
+                    result.table = table
+                    if ischeck == 'true':
+                        result.lastid = 0
+                        result.save()
+                        ret['status'] = 1002
+                    else:
+                        ret['status'] = 1002
+                        result.save()
             else:
                 ret['error'] = '配置错误，请重新配置'
             cursor.close()
@@ -328,13 +326,16 @@ def infoset(request):
 def infoget(request):
     if request.method == 'GET':
         ret = {'ip': '', 'port': '', 'type': '', 'username': '', 'password': '', 'table': ''}
-        result = TestSet.objects.all()[0]
-        ret['ip'] = result.host
-        ret['port'] = result.port
-        ret['type'] = result.type
-        ret['username'] = result.username
-        ret['password'] = result.password
-        ret['table'] = result.table
+        try:
+            result = TestSet.objects.all()[0]
+            ret['ip'] = result.host
+            ret['port'] = result.port
+            ret['type'] = result.type
+            ret['username'] = result.username
+            ret['password'] = result.password
+            ret['table'] = result.table
+        except:
+            ret = {'ip': '', 'port': '', 'type': '', 'username': '', 'password': '', 'table': ''}
         return HttpResponse(json.dumps(ret))
 
 
@@ -347,7 +348,7 @@ def accountform(request):
 #  账户设置
 @login_required
 def accountset(request):
-    if request.method=='POST':
+    if request.method =='POST':
         form = ChangePasswordForm(user=request.user,data=request.POST)
         if form.is_valid():
             form.save()
@@ -357,7 +358,95 @@ def accountset(request):
     return render(request, 'accountform.html', locals())
 
 
+#  查找
+@login_required
+def search(request, cata):
+    if request.method == 'GET':
+        user = request.user
+        types = request.GET.get('type')
+        page = request.GET.get('page')
+        sorts = request.GET.get('sort')
+        catas = request.GET.get('catas')
+        res = pag_get(types, page, sorts, catas)
+        return render(request, 'result_dis.html', {'user': user, 'users':res['page'], 'result': res['numbers'], 'type': types, 'sort':sorts, 'cata': catas})
+
+    if request.method == 'POST':
+        user = request.user
+        types = request.POST.get('myselect',)
+        stuff = request.POST.get('stuff', )
+        result = search_set(request, types, stuff, cata)
+        if types == '1':
+            if result['errors'] == '10':
+                paginator = result['result']
+                return render(request, 'result_dis.html', {'user': user, 'users': paginator, 'result': result['number'], 'type': types, 'sort': stuff, 'cata': cata})
+            else:
+                return render(request, 'result_dis.html', {'user': user, 'errors': result['errors'], 'cata': cata, 'result': 0})
+        else:
+            if result['errors'] == '10':
+                paginator = result['result']
+                result = result['number']
+                return render(request, 'result_dis.html', {'user': user, 'users': paginator, 'result': result, 'type': types, 'sort': stuff, 'cata': cata})
+            else:
+                return render(request, 'result_dis.html', {'user': user, 'errors': result['errors'], 'cata': cata, 'result': 0})
+
+
+#  月份查看
+@login_required
+def monthcheck(request):
+    user = request.user
+    a = getmonth()
+    b = getmonthdata()
+    c = getmonthbaddata()
+    return render(request, 'monthcheck.html', locals())
+
+
+#  图表数据
+@csrf_exempt
+def getdata(request):
+    try:
+        time = timehandle()
+        alldata_list = datahandle()
+        baddata_list = baddatahandle()
+        ret = {}
+        ret['time'] = time
+        ret['alldata_list'] = alldata_list
+        ret['baddata_list'] = baddata_list
+    except:
+        ret = {'time': [], 'alldata_list': [], 'baddata_list': []}
+    return HttpResponse(json.dumps(ret))
+
+
+#  规则搜索
+@login_required
+def rulesearch(request):
+    if request.method == 'GET':
+        user = request.user
+        types = request.GET.get('type')
+        page = request.GET.get('page')
+        sorts = request.GET.get('sort')
+        res = page_get(types, page, sorts)
+        success = '10'
+        return render(request, 'result_dis.html', {'user': user, 'success' :success, 'users':res['page'], 'result': res['numbers'], 'type': types, 'sort':sorts})
+
+    if request.method == 'POST':
+        user = request.user
+        types = request.POST.get('myselect',)
+        stuff = request.POST.get('stuff', )
+        result = rulesearch_set(request, types, stuff)
+        if result['errors'] == '':
+            paginator = result['result']
+            success = '10'
+            return render(request, 'testrulecheck.html', {'user': user, 'success' :success, 'users': paginator, 'result': result['number'], 'type': types, 'sort': stuff})
+        else:
+            return render(request, 'testrulecheck.html', {'user': user, 'errors': result['errors'], 'result': 0})
+
 #  测试
+def testa(request):
+    return render(request, 'test.html')
+
+
+
+
 
 
 

@@ -30,7 +30,7 @@
                     <div class="am-form-group">
                         <input type="password" class="tpl-form-input"   placeholder="请输入密码" name="password" >
                     </div>
-                    {% if error %}<span style="color: red">{{ error }}</span>{% endif %}
+                    {% if error %}<span style="color: yellowgreen">{{ error }}</span>{% endif %}
                     <div class="am-form-group">
 
                         <input type="submit" value="登陆" class="am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn" />
@@ -51,7 +51,7 @@
                         var callback_dict = $.parseJSON(callback);
                          if(callback_dict.status == 1001) {
                              $('#status').text(callback_dict.error);
-                             $('#status').css('color', 'crimson');
+                             $('#status').css('color', 'yellowgreen');
                              $('#status').fadeOut(5000);
                          }
                 }

@@ -45,6 +45,7 @@ class TestResult(models.Model):
     testrule = models.ForeignKey(TestRule, null=True)
     updated_at = models.DateTimeField("更新时间", auto_now=True)
 
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = '检验结果'

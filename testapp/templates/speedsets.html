@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Test Rule Setting{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+{% block menu %}
+				<ul class="sidebar-nav">
+					<li class="sidebar-nav-link">
+						<a href="{% url "index" %}">
+							<i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url 'result_dis' %}">
+							<i class="am-icon-clone sidebar-nav-link-logo"></i> 检测结果查看
+							<span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm"></span>
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "test_source" %}">
+							<i class="am-icon-table sidebar-nav-link-logo" style="color: #0c80ba"></i> 检测来源设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "testrule" %}">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测规则设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "speed" %}" class="active">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测批数设置
+						</a>
+					</li>
+                    <li class="sidebar-nav-heading"></li>
+                    <li class="sidebar-nav-link">
+                    </li>
+			</div>
+        </ul>
+    {% endblock %}
+            {% block content %}
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检测批数设置</div>
+                        <p class="page-header-description"></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-content am-cf">
+
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">配置批数</div>
+                            </div>
+                            <div class="widget-head am-cf">
+
+                                <form class="am-form tpl-form-line-form">
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 20px">当前设置</label>
+                                        <div class="am-u-sm-9">
+                                            <p type="text" class="tpl-form-input" id="user-s" name="ip" style="color:yellowgreen;font-size: 20px">{{ speed }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 20px">每批检验数量</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="user-speed" name="ip" style="color:yellowgreen;font-size: 20px">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="speedset();">提交</button><span style="color: yellowgreen;font-size: 20px;" id="speed-set"></span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+{% endblock %}
+{% block js %}
+    function speedset() {
+            var user = $('#user-speed').val();
+            $.ajax({
+                url: '{% url "speedset" %}',
+                type: 'POST',
+                data: {speed:user},
+                success:function (callback) {
+                    var callback_dict = $.parseJSON(callback);
+                    if(callback_dict.status == 1002){
+                        $('#speed-set').text('设置成功，3s后返回');
+                        $('#speed-set').removeClass('error').addClass('success');
+                        setInterval ("settime()", 1500);
+                    } else if(callback_dict.status == 1001){
+                        $('#speed-set').text(callback_dict.error);
+                        $('#speed-set').removeClass('success').addClass('error');
+                    }
+                }
+            })
+        };
+    function settime(){
+        window.location.href = "{% url "index" %}";
+    };
+{% endblock %}
