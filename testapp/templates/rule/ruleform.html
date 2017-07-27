@@ -104,7 +104,7 @@
                                     <div class="am-form-group">
                                     <div class="am-form-group">
                                         <div class="am-u-sm-9 am-u-sm-push-3">
-                                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="ruleup();">提交</button><span style="color: yellowgreen;font-size: 20px;" id="test-set"></span><span style="color: yellowgreen;font-size: 15px" id="tes-set"></span>
+                                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="ruleup();">提交</button><span style="color: yellowgreen;font-size: 20px;" id="test-set"></span><span style="color: yellowgreen;font-size: 20px" id="tes-set"></span>
                                         </div>
                                     </div>
                                         <a href="{% url "testrule" %}"><button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " style="margin-left: 412px">返回</button></a>
@@ -139,7 +139,7 @@
                         setInterval ("settime()", 1500);
                     } else if(callback_dict.status == 1001){
                         $('#tes-set').text(callback_dict.error);
-                        $('#tes-set').hide(8000)
+                        $('#tes-set').fadeOut(3000)
                         $('#tes-set').removeClass('success').addClass('error');
                     }
                 }

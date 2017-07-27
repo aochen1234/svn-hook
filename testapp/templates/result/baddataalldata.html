@@ -32,17 +32,17 @@
 										<table width="200%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
 											<thead>
 												<tr>
-													<th>检测时间</th>
-													<th>检测类型</th>
-													<th>检测ID</th>
-                                                    <th>检测URL</th>
-                                                    <th>检测COOKIE</th>
-                                                    <th>匹配规则</th>
+													<th style="font-size: 20px">检测时间</th>
+													<th style="font-size: 20px">检测类型</th>
+													<th style="font-size: 20px">检测ID</th>
+                                                    <th style="font-size: 20px">检测URL</th>
+                                                    <th style="font-size: 20px">检测COOKIE</th>
+                                                    <th style="font-size: 20px">匹配规则</th>
 												</tr>
 											</thead>
 											<tbody>
                                                 <tr class="gradeX" style="width:200px; height:50px;">
-													<td>{{ result.created_at }} </td>
+                                                    <td>{{ result.created_at }} </td>
 													<td>webshell</td>
 													<td>中国  {{ result.origin_id }} </td>
                                                     <td><pre>{{ result.origin_url  }}</pre></td>

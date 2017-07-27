@@ -13,10 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import url, include, handler404
 from django.contrib import admin
 from testappp import views
 from testappp import urls as web_url
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,6 +26,10 @@ urlpatterns = [
     url(r'accountcheck/$', views.user_ajax, name='user_ajax'),
     url(r'test/$', views.testa, name='testa'),
     url(r'^webshell/', include(web_url)),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+handler404 = views.page_not_found
+
+
 
 

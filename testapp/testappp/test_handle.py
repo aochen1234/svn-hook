@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+#  导入django的orm,报错的话设置环境变量 export PYTHONPATH=/home/xxx/xxx/testapp 根据自己时间情况更改,可以写
+#  进/etc/profile中永久生效
 import os,django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testapp.settings')
 django.setup()
@@ -190,6 +192,7 @@ def main_handle():
                 pass
             else:
                 pro_insert = list()
+                #  批量存储原始id,url,cookie
                 for i in result_list:
                     if i[14] != None or i[18] != None:
                         pro_insert.append(TestResult(origin_id=i[0], origin_url=i[14], origin_cookie=i[18]))

@@ -4,6 +4,7 @@
 {% block name %}{{ user }}{% endblock %}
 {% block menu %}
     <ul class="sidebar-nav">
+
 					<li class="sidebar-nav-link">
 						<a href="{% url "index" %}" class="active">
 							<i class="am-icon-home sidebar-nav-link-logo"></i> 首页
@@ -56,7 +57,7 @@
 						<div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
 							<div class="widget am-cf">
 								<div class="widget-head am-cf">
-									<div class="widget-title am-fl">本月累计检测数据</div>
+									<div class="widget-title am-fl" style="font-size: 20px">本月累计检测数据</div>
 
 								</div>
 								<div class="widget-body am-fr">
@@ -73,7 +74,7 @@
 										<div class="widget-fluctuation-description-amount am-text-danger" am-cf>
                                             <a href="{% url "result_dis" %}?catagory=allbaddata">{{ bad_data }}</a>
 										</div>
-										<div class="widget-fluctuation-description-text am-text-right">
+										<div class="widget-fluctuation-description-text am-text-right" style="font-size: 20px">
 											检测有害信息
 										</div>
 									</div>
@@ -83,7 +84,7 @@
 						</div>
 						<div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
 							<div class="widget widget-primary am-cf">
-								<div class="widget-statistic-header">
+								<div class="widget-statistic-header" style="font-size: 20px">
 									 待检测数据
 								</div>
 								<div class="widget-statistic-body">
@@ -99,7 +100,7 @@
 						</div>
 						<div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
 							<div class="widget widget-purple am-cf">
-								<div class="widget-statistic-header">
+								<div class="widget-statistic-header" style="font-size: 20px">
 									等待查看的结果
 								</div>
 								<div class="widget-statistic-body">
@@ -117,7 +118,7 @@
 					<div class="row am-cf">
                                 <div class="widget am-cf">
 								<div class="widget-head am-cf">
-									<div class="widget-title am-fl">本月检测情况</div>
+									<div class="widget-title am-fl" style="font-size: 20px">本月检测情况</div>
 								</div>
                                 <div  style="height:250px;font-size: 20px" id="main">
 								</div>
@@ -133,11 +134,11 @@
 										<table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
 											<thead>
 												<tr>
-													<th>检测时间</th>
-													<th>检测ID</th>
-                                                    <th>检测URL</th>
-                                                    <th>检测COOKIE</th>
-													<th>检测结果</th>
+													<th style="font-size: 20px">检测时间</th>
+													<th style="font-size: 20px">检测ID</th>
+                                                    <th style="font-size: 20px">检测URL</th>
+                                                    <th style="font-size: 20px">检测COOKIE</th>
+													<th style="font-size: 20px">检测结果</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -283,16 +284,13 @@
          }
 
      {% endblock %}
+{% block other %}<script>
+            $first=$.cookie('first_vist');
+            if(!$first||$first=='null'||$first==null){
+                $.cookie('first_vist','1',{ expires: 7 });
+            }else{
+                $.cookie('first_vist',null);
+                location.reload(true);
+            }
+</script>{% endblock %}
 
-itemStyle : {
-                                normal : {
-                                    lineStyle:{
-                                        color:'#00FF00'
-                                    }
-                                }
-                            },
-itemStyle : {
-                                normal : {
-                                        color:'#0c80ba'
-                                }
-                            },

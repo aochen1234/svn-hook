@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
@@ -25,4 +27,4 @@ urlpatterns = [
     url(r'testrule/testruleup/$', views.testruleup, name='testruleup'),
     url(r'month/$', views.monthcheck, name='month'),
     url(r'getdata/$', views.getdata, name='getdata'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

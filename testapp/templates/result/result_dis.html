@@ -171,7 +171,13 @@
     else if ( opt == '5') {
         $('#caption').text('请直接提交');}
     }
-
-
 {% endblock %}
-
+{% block other %}<script>
+            $first=$.cookie('first_vist');
+            if(!$first||$first=='null'||$first==null){
+                $.cookie('first_vist','1',{ expires: 7 });
+            }else{
+                $.cookie('first_vist',null);
+                location.reload(true);
+            }
+</script>{% endblock %}
