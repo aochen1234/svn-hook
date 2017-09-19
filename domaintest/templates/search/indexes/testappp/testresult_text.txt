@@ -1,8 +1,0 @@
-{{ object.host }}
-{{ object.sip }}
-{{ object.sloc }}
-{{ object.request_header }}
-{{ object.pattition_time }}
-{{ object.origin_url }}
-{{ object.created_at }}
-

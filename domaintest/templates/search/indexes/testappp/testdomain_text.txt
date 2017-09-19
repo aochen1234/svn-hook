@@ -1,4 +1,0 @@
-{{ object.name }}
-{{ object.content }}
-{{ object.ruletype }}
-{{ object.created_at }}

@@ -1,0 +1,5 @@
+#!/bin/bash
+REPOS="$1"
+TXN="$2"
+export LANG=zh_CN.UTF-8
+/home/svn/game/hooks/post-commit.py -p $REPOS -r $TXN 
