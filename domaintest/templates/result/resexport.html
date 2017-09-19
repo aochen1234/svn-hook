@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}Domain Result Export{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+{% block menu %}
+    <ul class="sidebar-nav">
+					<li class="sidebar-nav-link">
+						<a href="{% url "index" %}">
+							<i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url 'result_dis' %}">
+							<i class="am-icon-clone sidebar-nav-link-logo"></i> 检测结果查看
+							<span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm"></span>
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "source_set" %}">
+							<i class="am-icon-table sidebar-nav-link-logo"></i> 检测来源设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "testrule" %}">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测规则设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "speed" %}" >
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测批数设置
+						</a>
+					</li>
+                    <li class="sidebar-nav-link">
+						<a href="{% url "resexport" %}" class="active">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测结果导出
+						</a>
+					</li>
+                    <li class="sidebar-nav-heading"></li>
+                    <li class="sidebar-nav-link">
+                    </li>
+			</div>
+        </ul>
+{% endblock %}
+            {% block content %}
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检测结果导出</div>
+                        <p class="page-header-description">仅支持Oracle数据库</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div style="margin-left: 10px;margin-top: 20px"></div>
+                            <div class="widget-body am-fr">
+
+                                <form class="am-form tpl-form-line-form" style="margin-left: 350px" method="post" action="{% url "respost" %}">
+                                {% csrf_token %}
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 16px">导出数据月份</label>
+                                        <select data-am-selected="{btnSize: 'sm'}" id="month" name="month">
+                                              <option value="option1">所有月份</option>
+                                                {% for i in month_list %}
+                                              <option value="{{ i }}">{{ i }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    <div class="am-form-group" style="margin-top: 30px">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 16px">导出数据格式</label>
+                                        <select data-am-selected="{btnSize: 'sm'}" id="document" name="document">
+                                              <option value="option1">所有格式</option>
+                                              <option value="option2">CSV文件</option>
+                                              <option value="option3">EXCEL文件</option>
+                                            </select>
+                                        </div>
+                                    <div class="am-form-group" style="margin-top: 30px">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 16px">导出数据名称</label>
+                                        <div>
+                                        <input type="text" style="margin-right: 10px;width: 200px" id="exportname" name="exportname">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group" style="margin-top: 30px">
+                                        <label for="user-intro" class="am-u-sm-3 am-form-label" style="font-size: 16px">是否导出</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="tpl-switch">
+                                                <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" id="cb" name="test1" value="1">
+                                                <div class="tpl-switch-btn-view">
+                                                    <div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group" style="margin-top: 30px">
+                                        <label for="user-intro" class="am-u-sm-3 am-form-label" style="font-size: 16px">是否删除原始数据</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="tpl-switch">
+                                                <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" id="cba" name="test2" value="2">
+                                                <div class="tpl-switch-btn-view">
+                                                    <div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group" style="margin-top: 30px">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">确定导出</button>
+                                            <a href="{% url "index" %}"><button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " style="margin-left: 10px;margin-top: 3px">取消并返回</button></a>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div>
+                                    {% if error %}
+                                <span style="color: yellowgreen;font-size: larger;margin-left: 670px" id="test-set">{{ error }}</span>
+                                    {% endif %}
+                                </div>
+                                <p style="margin-left: 550px;font-size: 15px">备注: 1.导出数据时间预计2分钟,请勿重复操作.</p>
+                                <p style="margin-left: 590px;font-size: 15px">  2.导出数据名称未填写,则默认为数据表名.</p>
+                                <p style="margin-left: 590px;font-size: 15px">  3.导出数据后建议删除原始数据.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <p id="hh"></p>
+                    </div>
+                </div>
+        </div>
+{% endblock %}
+{% block js %}
+    $(document).ready(function(){
+        setInterval ("cleartext()", 5000);
+    });
+    function cleartext() {
+        $('#test-set').text('');
+    }
+{% endblock %}

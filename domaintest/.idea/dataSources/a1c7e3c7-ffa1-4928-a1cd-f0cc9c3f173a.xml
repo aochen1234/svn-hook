@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="@192.168.134.123">
+  <database-model serializer="dbm" rdbms="ORACLE" format-version="4.0">
+    <root id="1"/>
+    <schema id="2" parent="1" name="WEB">
+      <ObjectId>85</ObjectId>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="PUBLIC">
+      <ObjectId>1</ObjectId>
+    </schema>
+    <schema id="4" parent="1" name="SYS">
+      <ObjectId>0</ObjectId>
+    </schema>
+    <schema id="5" parent="1" name="SYSTEM">
+      <ObjectId>5</ObjectId>
+    </schema>
+    <schema id="6" parent="1" name="OUTLN">
+      <ObjectId>9</ObjectId>
+    </schema>
+    <schema id="7" parent="1" name="DIP">
+      <ObjectId>14</ObjectId>
+    </schema>
+    <schema id="8" parent="1" name="ORACLE_OCM">
+      <ObjectId>21</ObjectId>
+    </schema>
+    <schema id="9" parent="1" name="DBSNMP">
+      <ObjectId>30</ObjectId>
+    </schema>
+    <schema id="10" parent="1" name="APPQOSSYS">
+      <ObjectId>31</ObjectId>
+    </schema>
+    <schema id="11" parent="1" name="WMSYS">
+      <ObjectId>32</ObjectId>
+    </schema>
+    <schema id="12" parent="1" name="EXFSYS">
+      <ObjectId>42</ObjectId>
+    </schema>
+    <schema id="13" parent="1" name="CTXSYS">
+      <ObjectId>43</ObjectId>
+    </schema>
+    <schema id="14" parent="1" name="XDB">
+      <ObjectId>45</ObjectId>
+    </schema>
+    <schema id="15" parent="1" name="ANONYMOUS">
+      <ObjectId>46</ObjectId>
+    </schema>
+    <schema id="16" parent="1" name="ORDSYS">
+      <ObjectId>53</ObjectId>
+    </schema>
+    <schema id="17" parent="1" name="ORDDATA">
+      <ObjectId>54</ObjectId>
+    </schema>
+    <schema id="18" parent="1" name="ORDPLUGINS">
+      <ObjectId>55</ObjectId>
+    </schema>
+    <schema id="19" parent="1" name="SI_INFORMTN_SCHEMA">
+      <ObjectId>56</ObjectId>
+    </schema>
+    <schema id="20" parent="1" name="MDSYS">
+      <ObjectId>57</ObjectId>
+    </schema>
+    <schema id="21" parent="1" name="OLAPSYS">
+      <ObjectId>61</ObjectId>
+    </schema>
+    <schema id="22" parent="1" name="MDDATA">
+      <ObjectId>65</ObjectId>
+    </schema>
+    <schema id="23" parent="1" name="SPATIAL_WFS_ADMIN_USR">
+      <ObjectId>67</ObjectId>
+    </schema>
+    <schema id="24" parent="1" name="SPATIAL_CSW_ADMIN_USR">
+      <ObjectId>70</ObjectId>
+    </schema>
+    <schema id="25" parent="1" name="SYSMAN">
+      <ObjectId>72</ObjectId>
+    </schema>
+    <schema id="26" parent="1" name="MGMT_VIEW">
+      <ObjectId>74</ObjectId>
+    </schema>
+    <schema id="27" parent="1" name="FLOWS_FILES">
+      <ObjectId>75</ObjectId>
+    </schema>
+    <schema id="28" parent="1" name="APEX_PUBLIC_USER">
+      <ObjectId>76</ObjectId>
+    </schema>
+    <schema id="29" parent="1" name="APEX_030200">
+      <ObjectId>78</ObjectId>
+    </schema>
+    <schema id="30" parent="1" name="OWBSYS">
+      <ObjectId>79</ObjectId>
+    </schema>
+    <schema id="31" parent="1" name="OWBSYS_AUDIT">
+      <ObjectId>83</ObjectId>
+    </schema>
+    <schema id="32" parent="1" name="SCOTT">
+      <ObjectId>84</ObjectId>
+    </schema>
+    <schema id="33" parent="1" name="XS$NULL">
+      <ObjectId>2147483638</ObjectId>
+    </schema>
+    <sequence id="34" parent="2" name="DJANGO_MIGRATIONS_SQ">
+      <ObjectId>75647</ObjectId>
+    </sequence>
+    <sequence id="35" parent="2" name="DJANGO_CONTENT_TYPE_SQ">
+      <ObjectId>75651</ObjectId>
+    </sequence>
+    <sequence id="36" parent="2" name="AUTH_PERMISSION_SQ">
+      <ObjectId>75659</ObjectId>
+    </sequence>
+    <sequence id="37" parent="2" name="AUTH_GROUP_SQ">
+      <ObjectId>75662</ObjectId>
+    </sequence>
+    <sequence id="38" parent="2" name="AUTH_GROUP_PERMISSIONS_SQ">
+      <ObjectId>75663</ObjectId>
+    </sequence>
+    <sequence id="39" parent="2" name="TESTAPPP_NEWUSER_SQ">
+      <ObjectId>75692</ObjectId>
+    </sequence>
+    <sequence id="40" parent="2" name="TESTAPPP_NEWUSER_GROUPS_SQ">
+      <ObjectId>75693</ObjectId>
+    </sequence>
+    <sequence id="41" parent="2" name="TESTAPPP_NEWUSER_USER_P12BE">
+      <ObjectId>75697</ObjectId>
+    </sequence>
+    <sequence id="42" parent="2" name="DJANGO_ADMIN_LOG_SQ">
+      <ObjectId>75708</ObjectId>
+    </sequence>
+    <sequence id="43" parent="2" name="TESTDOMAIN_SEQ">
+      <ObjectId>75716</ObjectId>
+    </sequence>
+    <sequence id="44" parent="2" name="TESTRESULT_SEQ">
+      <ObjectId>75718</ObjectId>
+    </sequence>
+    <sequence id="45" parent="2" name="RESULTNUMBER_SEQ">
+      <ObjectId>75720</ObjectId>
+    </sequence>
+    <sequence id="46" parent="2" name="TESTSET_SEQ">
+      <ObjectId>75722</ObjectId>
+    </sequence>
+    <table id="47" parent="2" name="HTTP_RESTORE_INFO">
+      <ObjectId>73517</ObjectId>
+    </table>
+    <table id="48" parent="2" name="EVENT_PROPLIST">
+      <ObjectId>75549</ObjectId>
+    </table>
+    <table id="49" parent="2" name="EVENT_RECORD">
+      <ObjectId>75551</ObjectId>
+    </table>
+    <table id="50" parent="2" name="DJANGO_MIGRATIONS">
+      <ObjectId>75645</ObjectId>
+    </table>
+    <table id="51" parent="2" name="DJANGO_CONTENT_TYPE">
+      <ObjectId>75648</ObjectId>
+    </table>
+    <table id="52" parent="2" name="AUTH_PERMISSION">
+      <ObjectId>75652</ObjectId>
+    </table>
+    <table id="53" parent="2" name="AUTH_GROUP">
+      <ObjectId>75654</ObjectId>
+    </table>
+    <table id="54" parent="2" name="AUTH_GROUP_PERMISSIONS">
+      <ObjectId>75657</ObjectId>
+    </table>
+    <table id="55" parent="2" name="TESTAPPP_NEWUSER">
+      <ObjectId>75667</ObjectId>
+    </table>
+    <table id="56" parent="2" name="TESTAPPP_NEWUSER_GROUPS">
+      <ObjectId>75670</ObjectId>
+    </table>
+    <table id="57" parent="2" name="TESTAPPP_NEWUSER_USER_PERMD659">
+      <ObjectId>75672</ObjectId>
+    </table>
+    <table id="58" parent="2" name="TESTAPPP_RESULTNUMBER">
+      <ObjectId>75674</ObjectId>
+    </table>
+    <table id="59" parent="2" name="TESTAPPP_TESTDOMAIN">
+      <ObjectId>75676</ObjectId>
+    </table>
+    <table id="60" parent="2" name="TESTAPPP_TESTRESULT">
+      <ObjectId>75678</ObjectId>
+    </table>
+    <table id="61" parent="2" name="TESTAPPP_TESTSET">
+      <ObjectId>75690</ObjectId>
+    </table>
+    <table id="62" parent="2" name="DJANGO_ADMIN_LOG">
+      <ObjectId>75702</ObjectId>
+    </table>
+    <table id="63" parent="2" name="DJANGO_SESSION">
+      <ObjectId>75711</ObjectId>
+    </table>
+  </database-model>
+</dataSource>

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Bad Data Information{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+{% load mytags %}
+{% block menu %}
+				<ul class="sidebar-nav">
+					<li class="sidebar-nav-link">
+						<a href="{% url "index" %}">
+							<i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url 'result_dis' %}" class="active">
+							<i class="am-icon-clone sidebar-nav-link-logo"></i> 检测结果查看
+							<span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm"></span>
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "source_set" %}">
+							<i class="am-icon-table sidebar-nav-link-logo"></i> 检测来源设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "testrule" %}">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测规则设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "speed" %}" >
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测批数设置
+						</a>
+					</li>
+                    <li class="sidebar-nav-link">
+						<a href="{% url "resexport" %}" >
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测结果导出
+						</a>
+					</li>
+                    <li class="sidebar-nav-heading"></li>
+                    <li class="sidebar-nav-link">
+                    </li>
+			</div>
+        </ul>
+    {% endblock %}
+            {% block content %}
+			<!-- 内容区域 -->
+
+                <div class="tpl-content-wrapper"><strong style="color: yellowgreen"></strong>
+
+				<div class="container-fluid am-cf">
+					<div class="row">
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+							<div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检测异常结果查看 <small></small></div>
+							<p class="page-header-description">目前只支持HTTP检测。</p>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row-content am-cf">
+		                	<div class="row  am-cf">
+					<div class="row am-cf">
+
+					<div class="row am-cf">
+
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg">
+
+							<div class="widget am-cf widget-body-lg">
+
+								<div class="widget-body  am-fr">
+									<div class="am-scrollable-horizontal ">
+										<table width="200%" class="am-table am-table-compact am-text-nowrap tpl-table-black ">
+											<thead>
+												<tr>
+                                                    <th style="font-size: 16px">检测时间</th>
+													<th style="font-size: 16px">原始ID</th>
+                                                    <th style="font-size: 16px">原始URL</th>
+                                                    <th style="font-size: 16px">原始COOKIE</th>
+                                                    <th style="font-size: 16px">匹配规则</th>
+												</tr>
+											</thead>
+											<tbody>
+                                                <tr class="gradeX" style="width:200px; height:50px;">
+                                                    <td>{{ result.created_at }} </td>
+													<td>{{ result.origin_id }} </td>
+                                                    <td id="changeurlcolor"><pre>{{ result.origin_url }}</pre></td>
+                                                    <td id="changecookiecolor"><pre>{{ result.origin_cookie  }}</pre>></td>
+                                                    <td id="testrulename">{{ result.testrule.name }}</td>
+												</tr>
+												<!-- more data -->
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+        {% endblock %}
+     {% block js %}
+         $(document).ready(function () {
+                    changecolor();
+                });
+         function changecolor() {
+            var testname = document.getElementById("testrulename").innerHTML;
+            $.ajax({
+                url: '{% url "gettestrule" re_id%}',
+                type: 'POST',
+                data: {name: testname},
+                success:function (callback) {
+                    var callback_dict = $.parseJSON(callback);
+                    var new_url = change(callback_dict.url);
+                    var new_cookie = change(callback_dict.cookie);
+                    changeurl(new_url);
+                    changecookie(new_cookie);
+                    }
+                })
+                };
+                function changeurl(valu){
+            var xsxf = document.getElementById("changeurlcolor");
+            xsxf.innerHTML =  xsxf.innerHTML.replace(valu, ("<strong style='color: #FF0000;font-size: 15px'>" + valu + "</strong>"));
+         };
+                function changecookie(valu){
+            var xsxf = document.getElementById("changecookiecolor");
+            xsxf.innerHTML =  xsxf.innerHTML.replace(valu, ("<strong style='color: #FF0000;font-size: 15px'>" + valu + "</strong>"));
+         };
+                function change(aa) {
+                    var elem = document.createElement('div');
+                    var txt = document.createTextNode(aa);
+                    elem.appendChild(txt);
+                    return elem.innerHTML;
+                };
+     {% endblock %}

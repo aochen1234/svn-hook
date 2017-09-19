@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}检验规则新增{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+{% block menu %}
+				<ul class="sidebar-nav">
+					<li class="sidebar-nav-link">
+						<a href="{% url "index" %}">
+							<i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url 'result_dis' %}">
+							<i class="am-icon-clone sidebar-nav-link-logo"></i> 检测结果查看
+							<span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm"></span>
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "source_set" %}">
+							<i class="am-icon-table sidebar-nav-link-logo"></i> 检测来源设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "testrule" %}" class="active">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测规则设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "speed" %}" >
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测起始点设置
+						</a>
+					</li>
+                    <li class="sidebar-nav-heading"></li>
+                    <li class="sidebar-nav-link">
+                    </li>
+			</div>
+        </ul>
+    {% endblock %}
+            {% block content %}
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检测规则新增</div>
+                        <p class="page-header-description"></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-content am-cf">
+
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div style="margin-left: 10px;margin-top: 20px">
+                                <div class="widget-title am-fl">检验规则新增</div>
+                            </div>
+                            <div class="widget-head am-cf">
+
+                                <form class="am-form tpl-form-line-form" style="margin-left: 250px">
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 16px">规则名字</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="user-name" name="ip" style="color:yellowgreen;font-size: 16px;width: 250px">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 16px">规则内容</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" id="user-url" name="domain" style="color:yellowgreen;font-size: 16px;width: 250px">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group" style="margin-top: 30px">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 16px">匹配类型</label>
+                                        <select data-am-selected="{btnSize: 'sm'}" id="document" name="document">
+                                              <option value="option1">webshell</option>
+                                              <option value="option2">domain</option>
+                                            </select>
+                                        </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="ruleup();">保存</button>
+                                            <a href="{% url "testrule" %}"><button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " style="margin-left: 10px">取消并返回</button></a>
+                                        </div>
+                                    </div>
+                                </form>
+                                <span style="color: yellowgreen;font-size: 20px;margin-left: 600px" id="test-set"></span><span style="color: yellowgreen;font-size: 20px" id="tes-set"></span>
+                                <p style="margin-left: 550px;font-size: 16px">备注:1.规则名字未填写的话,则默认命名</p>
+                                <p style="margin-left: 585px;font-size: 16px">2.匹配类型未选择的话,则默认匹配webshell</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+{% endblock %}
+{% block js %}
+    function ruleup() {
+            var name = $('#user-name').val();
+            var url = $('#user-url').val();
+            var types = $('#document').val();
+            $.ajax({
+                url: '{% url "testrule_up" %}',
+                type: 'POST',
+                data: {names:name, content:url, type: types},
+                success:function (callback) {
+                    var callback_dict = $.parseJSON(callback);
+                    if(callback_dict.status == 1002){
+                        $('#test-set').text('设置成功，3s后返回');
+                        $('#test-set').removeClass('error').addClass('success');
+                        setInterval ("settime()", 1500);
+                    } else if(callback_dict.status == 1001){
+                        $('#tes-set').text(callback_dict.error);
+                        $('#tes-set').removeClass('success').addClass('error');
+                        setInterval ("cleartext()", 2000);
+                    }
+                }
+            })
+        };
+    function settime(){
+        window.location.href = "{% url "testrule" %}";
+    };
+    function cleartext(){
+        $('#tes-set').text('')
+    }
+{% endblock %}

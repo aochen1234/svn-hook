@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block title %}检测规则删除{% endblock %}
+{% block welcome %}{{ user }}{% endblock %}
+{% block name %}{{ user }}{% endblock %}
+{% block menu %}
+				<ul class="sidebar-nav">
+					<li class="sidebar-nav-link">
+						<a href="{% url "index" %}">
+							<i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url 'result_dis' %}">
+							<i class="am-icon-clone sidebar-nav-link-logo"></i> 检测结果查看
+							<span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm"></span>
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "source_set" %}">
+							<i class="am-icon-table sidebar-nav-link-logo"></i> 检测来源设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "testrule" %}" class="active">
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测规则设置
+						</a>
+					</li>
+					<li class="sidebar-nav-link">
+						<a href="{% url "speed" %}" >
+							<i class="am-icon-calendar sidebar-nav-link-logo"></i> 检测起始点设置
+						</a>
+					</li>
+                    <li class="sidebar-nav-heading"></li>
+                    <li class="sidebar-nav-link">
+                    </li>
+			</div>
+        </ul>
+    {% endblock %}
+            {% block content %}
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 检测规则删除</div>
+                        <p class="page-header-description"><small style="color: yellowgreen;font-size: larger">删除后不可恢复</small></p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+
+                            <div class="widget-body am-fr">
+
+                                <form class="am-form tpl-form-line-form" style="margin-left: 200px">
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label" style="font-size: 16px">当前规则名字</label>
+                                        <span style="font-size: 20px;color: yellowgreen;margin-left: 50px">{{ c.name }}</span>
+
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 16px">规则内容</label>
+                                        <span style="font-size: 20px;color: yellowgreen;margin-left: 50px">{{ c.content }}</span>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label" style="font-size: 16px">匹配类型</label>
+                                        <span style="font-size: 20px;color: yellowgreen;margin-left: 50px">{{ c.ruletype }}</span>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-intro" class="am-u-sm-3 am-form-label">确认删除</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="tpl-switch">
+                                                <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" id="cba">
+                                                <div class="tpl-switch-btn-view">
+                                                    <div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-intro" class="am-u-sm-3 am-form-label">是否删除匹配的结果</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="tpl-switch">
+                                                <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" id="cb">
+                                                <div class="tpl-switch-btn-view">
+                                                    <div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="ruledelete();">确定</button>
+                                            <a href="{% url "testrule" %}"><button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " style="margin-left: 10px;margin-top: 3px">取消并返回</button></a>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div>
+                                <span style="color: yellowgreen;font-size: larger;margin-left: 550px" id="rule-set"></span><span style="color: yellowgreen;font-size: larger" id="rule-se"></span>
+                                </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <p id="hh"></p>
+                    </div>
+                </div>
+        </div>
+{% endblock %}
+{% block js %}
+    function ruledelete() {
+            var isChecked1 = $('#cba').prop('checked');
+            var isChecked2 = $('#cb').prop('checked');
+            $.ajax({
+                url: '/domain/testrule/{{ rule_id }}/setting/{{ c.id }}/delete/',
+                type: 'POST',
+                data: {is1:isChecked1, is2:isChecked2},
+                success:function (callback) {
+                    var callback_dict = $.parseJSON(callback);
+                    if(callback_dict.status == 1002){
+                        $('#rule-set').text('删除成功，3s后返回');
+                        $('#rule-set').removeClass('error').addClass('success');
+                        setInterval ("settime()", 1500);
+                    } else if(callback_dict.status == 1001){
+                        $('#rule-se').text(callback_dict.error);
+                        $('#rule-se').removeClass('success').addClass('error');
+                        setInterval ("cleartext()", 2000);
+                    }
+                }
+            })
+        };
+    function settime(){
+        window.location.href = "{% url "testrule" %}";
+    };
+    function cleartext(){
+        $('#rule-set').text('')
+    }
+{% endblock %}
